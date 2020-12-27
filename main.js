@@ -47,19 +47,16 @@ function putStone(x, y, color){
     ctx.fill();
 }
 
+// 石ををく座標を特定する
 function putStoneAt(event){
     var rect = event.target.getBoundingClientRect();
     x = event.clientX;
     y = event.clientY;
-    // console.log(rect)
-    // console.log({x, y})
-    // console.log(rect.left, rect.top)
 
     // clientX, clientYはCanvas上からの座標ではなく、表示されているページの上部を0としている。
     // rectはevent が起きたtarget（要素）の位置を取得している。
     x = event.clientX - rect.left;
     y = event.clientY - rect.top;
-    // console.log({x, y})
 
     // 20 + 40n に配置されるようにすれば良い
     // % は 余りを取得する演算子 
@@ -67,16 +64,21 @@ function putStoneAt(event){
     // fx2. 170なら１０ (170-10+20=180)
     x = x - x % 40 + 20 // キリが良い箇所に配置されるようにx座標を補正
     y = y - y % 40 + 20 // キリが良い箇所に配置されるようにy座標を補正
-    
 
+
+    check(x, y)
+}
+
+// 石が置けるかチェックする
+function check(x ,y){
     // どこに石を置いたか
     let posX = (x-20) / 40
     let posY = (y-20) / 40
     console.log({posX , posY})
 
     // 隣接する盤面の配置を左回りで配列化
-    directionX =[-1, -1, 0, 1, 1, 1, 0, -1]
-    directionY =[0, -1, -1, -1, 0, 1, 1, 1]
+    directionX = [-1, -1, 0, 1, 1, 1, 0, -1]
+    directionY = [0, -1, -1, -1, 0, 1, 1, 1]
 
     // 選択した盤面に石が置かれているか
     if(playBoard[posY][posX] === 0 ){
@@ -84,13 +86,22 @@ function putStoneAt(event){
         for(var int = 0; int < 8; int++){
             adjacentX = posX + directionX[int]
             adjacentY = posY + directionY[int]
-            console.log(adjacentX,adjacentY)
-            if(playBoard[adjacentY][adjacentX] !== 0 && adjacentY < 0 || adjacentX < 0){
-                putStone(x, y, player)
-                playBoard[posY][posX] = player
-                console.log(playBoard)
-                changePlayer()
+            if(adjacentY < 0 ){
+                continue;
             }
+            if(adjacentX < 0 ){
+                continue;
+            }
+            // || playBoard[adjacentY][adjacentX] !== player
+            if(playBoard[adjacentY][adjacentX] === 0 || playBoard[adjacentY][adjacentX] == null){
+                continue;
+            }
+            console.log(adjacentX, adjacentY)
+            console.log("aa")
+            putStone(x, y, player)
+            playBoard[posY][posX] = player
+            console.log(playBoard)
+            changePlayer()
         }
     }
 }
