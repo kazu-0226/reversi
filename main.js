@@ -36,7 +36,7 @@ for(let row = 0; row < 8; row++){
 }
 
 // 石を配置
-function putStone(x, y, color){
+function drawStone(x, y, color){
     if(color == 1){
         ctx.fillStyle = "white";
     }else{
@@ -87,35 +87,36 @@ function canPutStone(x ,y){
         for(var int = 0; int < 8; int++){
             adjacentX = posX + directionX[int]
             adjacentY = posY + directionY[int]
-            // 盤面外の場合は処理を止める
+            // 隣接したマスが盤面外の場合は処理を止める
             if(adjacentY < 0 ){
                 continue;
             }
             if(adjacentX < 0 ){
                 continue;
             }
-            // 隣接した石がない場合とnull（盤面外)の場合、自分の石の場合は処理を止める
+
+            // 隣接したマスに石がない場合とnull（盤面外)の場合、自分の石の場合は処理を止める
             if(playBoard[adjacentY][adjacentX] === 0 || playBoard[adjacentY][adjacentX] == null || playBoard[adjacentY][adjacentX] === player ){
                 continue;
             }
-
-            // if( playBoard[adjacentY][adjacentX] === player){
-            //     continue;
-            // }
             
-            while(playBoard[adjacentY][adjacentX]  !== player){
-                console.log("x"+adjacentX,"y"+adjacentY)
-                adjacentX += adjacentX[int]
-                adjacentY += adjacentY[int]
+            // 隣接したマスから自分と同じに辿り着くまで、8方向にすすむ繰り返し処理
+            while(playBoard[adjacentY][adjacentX]  === player){
+                adjacentX += directionX[int]
+                adjacentY += directionY[int]
             }
-
-            // putStone(x, y, player)
-            // playBoard[posY][posX] = player
-            // console.log(playBoard)
+            drawStone(x, y, player)
+            playBoard[posY][posX] = player
+            console.log(playBoard)
         }
     changePlayer()
     }
 }
+
+function putStone(){
+    
+}
+
 
 // プレイヤーを切り替える
 function changePlayer(){
@@ -126,16 +127,18 @@ function changePlayer(){
         player = 1
         displayPlayer.innerText = "白のターンです"
     }
-    console.log(player)
+    console.log("プレイヤー" + player)
 }
 
   // 初期配置を行う関数
 function initialize(){
-    putStone(140, 140, 1)
-    putStone(180, 140, 2)
-    putStone(140, 180, 2)
-    putStone(180, 180, 1)
-    putStone(220, 180, 1)
+    drawStone(140, 140, 1)
+    drawStone(180, 140, 2)
+    drawStone(140, 180, 2)
+    drawStone(180, 180, 1)
+    drawStone(220, 180, 1)
 }
 // 初期配置を実装
 initialize()
+
+
