@@ -7,7 +7,7 @@ var playBoard = [
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,1,2,0,0,0],
-  [0,0,0,2,1,0,0,0],
+  [0,0,0,2,1,1,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
@@ -15,7 +15,7 @@ var playBoard = [
 
 
 var displayPlayer = document.getElementById("player")
-let player = 1;
+let player = 2;
 
 
 // 縦の線を引く
@@ -65,13 +65,14 @@ function putStoneAt(event){
     x = x - x % 40 + 20 // キリが良い箇所に配置されるようにx座標を補正
     y = y - y % 40 + 20 // キリが良い箇所に配置されるようにy座標を補正
 
-
-    check(x, y)
+    // 置けるかどうか
+    canPutStone(x, y)
 }
 
 // 石が置けるかチェックする
-function check(x ,y){
+function canPutStone(x ,y){
     // どこに石を置いたか
+    let flg = false
     let posX = (x-20) / 40
     let posY = (y-20) / 40
     console.log({posX , posY})
@@ -86,23 +87,33 @@ function check(x ,y){
         for(var int = 0; int < 8; int++){
             adjacentX = posX + directionX[int]
             adjacentY = posY + directionY[int]
+            // 盤面外の場合は処理を止める
             if(adjacentY < 0 ){
                 continue;
             }
             if(adjacentX < 0 ){
                 continue;
             }
-            // || playBoard[adjacentY][adjacentX] !== player
-            if(playBoard[adjacentY][adjacentX] === 0 || playBoard[adjacentY][adjacentX] == null){
+            // 隣接した石がない場合とnull（盤面外)の場合、自分の石の場合は処理を止める
+            if(playBoard[adjacentY][adjacentX] === 0 || playBoard[adjacentY][adjacentX] == null || playBoard[adjacentY][adjacentX] === player ){
                 continue;
             }
-            console.log(adjacentX, adjacentY)
-            console.log("aa")
-            putStone(x, y, player)
-            playBoard[posY][posX] = player
-            console.log(playBoard)
-            changePlayer()
+
+            // if( playBoard[adjacentY][adjacentX] === player){
+            //     continue;
+            // }
+            
+            while(playBoard[adjacentY][adjacentX]  !== player){
+                console.log("x"+adjacentX,"y"+adjacentY)
+                adjacentX += adjacentX[int]
+                adjacentY += adjacentY[int]
+            }
+
+            // putStone(x, y, player)
+            // playBoard[posY][posX] = player
+            // console.log(playBoard)
         }
+    changePlayer()
     }
 }
 
@@ -115,6 +126,7 @@ function changePlayer(){
         player = 1
         displayPlayer.innerText = "白のターンです"
     }
+    console.log(player)
 }
 
   // 初期配置を行う関数
@@ -123,6 +135,7 @@ function initialize(){
     putStone(180, 140, 2)
     putStone(140, 180, 2)
     putStone(180, 180, 1)
+    putStone(220, 180, 1)
 }
 // 初期配置を実装
 initialize()
