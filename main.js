@@ -15,7 +15,18 @@ var playBoard = [
 
 
 var displayPlayer = document.getElementById("player")
-let player = 2;
+let player = 2; //  先行は黒
+
+const movesDirection = [
+    { x: 0, y: 1 },   // 上
+    { x: 0, y: -1 },  // 下
+    { x: 1, y: 0 },   // 右
+    { x: 1, y: 1 },   // 右下
+    { x: 1, y: -1 },  // 右上
+    { x: -1, y: 0 },  // 左
+    { x: -1, y: 1 },  // 左下
+    { x: -1, y: -1 }  // 左上
+  ]
 
 
 // 縦の線を引く
@@ -66,7 +77,7 @@ function putStoneAt(event){
     y = y - y % 40 + 20 // キリが良い箇所に配置されるようにy座標を補正
 
     // 置けるかどうか
-    canPutStone(x, y)
+    var check = canPutStone(x, y)
 }
 
 // 石が置けるかチェックする
@@ -102,20 +113,21 @@ function canPutStone(x ,y){
             
             // 隣接したマスから自分と同じに辿り着くまで、8方向にすすむ繰り返し処理
             while(playBoard[adjacentY][adjacentX]  === player){
+                let changeStones = [] 
                 adjacentX += directionX[int]
                 adjacentY += directionY[int]
-            }
-            drawStone(x, y, player)
-            playBoard[posY][posX] = player
-            console.log(playBoard)
+                changeStones.push({ x: adjacentX, y: adjacentY })
+                if(playBoard[adjacentY][adjacentX]  === player){
+                    drawStone(x, y, player)
+                    playBoard[posY][posX] = player
+                    console.log(playBoard)
+                    changePlayer()
+                }
+            }   
         }
-    changePlayer()
     }
 }
 
-function putStone(){
-    
-}
 
 
 // プレイヤーを切り替える
