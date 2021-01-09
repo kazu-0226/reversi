@@ -91,7 +91,7 @@ const directions = [
     
   ]
 
-  // 石を置けるかのチェック
+// 石を置きたい場所の8方向それぞれに石がどのように配置されているか
 function canPutStone(originX, originY){
   directions.forEach((direction) =>{
     // 石を置けるかのロジック + ひっくり返すための情報
