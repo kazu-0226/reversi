@@ -31,12 +31,13 @@ function drawReversiFiledLine(){
 }
 
 
+// 盤面の状態を配列に表す
 var playBoard = [
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
+  [0,0,0,2,1,0,0,0],
   [0,0,0,1,2,0,0,0],
-  [0,0,0,2,1,1,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
@@ -72,18 +73,45 @@ function putStoneAt(event){
   currentPlayer = currentPlayer === "white" ? "black" : "white"
 }
 
+// 石を置けるかの判定
+// 1.隣接したブロックに自分の石ではない色の石が置いてある
+// 2.石がなければそこで調べるのを止める
+// 3.終端まで行った場合は調べるのを止める
 
-
-const movesDirection = [
-    { x: 0, y: 1 },   // 上
-    { x: 0, y: -1 },  // 下
+// 8方向の座標
+const directions = [
+    { x: 0, y: -1 },  // 上
+    { x: 0, y: 1 },   // 下
     { x: 1, y: 0 },   // 右
-    { x: 1, y: 1 },   // 右下
     { x: 1, y: -1 },  // 右上
+    { x: 1, y: 1 },   // 右下
     { x: -1, y: 0 },  // 左
-    { x: -1, y: 1 },  // 左下
-    { x: -1, y: -1 }  // 左上
+    { x: -1, y: -1 },  // 左上
+    { x: -1, y: 1 }  // 左下
+    
   ]
+
+  // 石を置けるかのチェック
+function canPutStone(originX, originY){
+  directions.forEach((direction) =>{
+    // 石を置けるかのロジック + ひっくり返すための情報
+    let x = originX
+    let y = originY
+    console.log("方向 x:" + direction.x + " y:" + direction.y)
+    // 最大7回繰り返す
+    for(let i=0; i<7; i++){
+      x = x + direction.x
+      y = y + direction.y
+      if(x > 7 || x < 0 || y > 7 || y < 0){
+        break;
+      }
+      if(playBoard[y][x] !== 0){
+        console.log(playBoard[y][x] === 1 ? "白石" : "黒石")
+      }
+      console.log("----- ----- -----")
+    }
+  })
+}
 
 
 
