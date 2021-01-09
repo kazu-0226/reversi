@@ -42,21 +42,37 @@ var playBoard = [
   [0,0,0,0,0,0,0,0],
 ]
 
-// 石を置く関数
-function drawStone(){
+// 初期配置
+drawStone(3, 3, "black")
+drawStone(3, 4, "white")
+drawStone(4, 3, "white")
+drawStone(4, 4, "black")
 
+// プレイヤー
+let currentPlayer = "white"
+
+// 石を置く関数
+function drawStone(x, y, color){
+  ctx.fillStyle = color
+  ctx.beginPath();
+  ctx.arc(25 + x * 50, 25 + y *50, 22, 0, 2 * Math.PI)
+  ctx.fill();
+}
+
+function putStoneAt(event){
+  var rect = event.target.getBoundingClientRect();
+  mouseX = event.clientX - Math.floor(rect.left);
+  mouseY = event.clientY - Math.floor(rect.top);
+  console.log({ mouseX, mouseY })
+ 
+  const posX = Math.round((mouseX -25) / 50)
+  const posY = Math.round((mouseY -25) / 50)
+  drawStone(posX, posY, currentPlayer)
+
+  currentPlayer = currentPlayer === "white" ? "black" : "white"
 }
 
 
-
-
-
-
-
-
-
-var displayPlayer = document.getElementById("player")
-let player = 2; //  先行は黒
 
 const movesDirection = [
     { x: 0, y: 1 },   // 上
