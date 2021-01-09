@@ -1,25 +1,34 @@
+const FIELD_WIDTH = 400
+const FIELD_HEIGHT = 400
+const BLOCK_SIZE = 400/8
+
 const canvas = document.getElementById("reversi")
 const ctx = canvas.getContext("2d")
-
+ctx.lineWidth = 1;
 ctx.fillStyle = "black"
 
-// 縦の線を引く
-// 横幅400を8分割(50)
-for(let col = 0; col < 8; col++){
-  ctx.beginPath(); 
-  ctx.moveTo(50 * col, 0); //  X軸に40*col(8回)の位置に筆を下ろす
-  ctx.lineTo(50 * col, 400);//  X軸に40*col(8回)の位置からy軸の最大幅(320)まで線を引く
-  ctx.stroke();
-}
+// オセロの盤面の区切りを描画
+drawReversiFiledLine()
 
-// 横の線を引く
-for(let row = 0; row < 8; row++){
-  ctx.beginPath();
-  ctx.moveTo(0, 50 * row);
-  ctx.lineTo(400, 50 * row);
-  ctx.stroke();
-}
+function drawReversiFiledLine(){
+  // 縦の線を引く
+  // 横幅400を8分割(50)
+  for(let col = 1; col < 8; col++){
+    ctx.beginPath(); 
+    ctx.moveTo(BLOCK_SIZE * col, 0); //  x軸に50*col(7回)の位置に筆を下ろす
+    ctx.lineTo(BLOCK_SIZE * col, FIELD_HEIGHT);//  x軸に50*col(7回)の位置からy軸の最大幅(400)まで線を引く
+    ctx.stroke();
+  }
 
+  // 横の線を引く
+  // 横幅400を8分割(50)
+  for(let row = 1; row < 8; row++){
+    ctx.beginPath();
+    ctx.moveTo(0, BLOCK_SIZE * row);
+    ctx.lineTo(FIELD_WIDTH , BLOCK_SIZE * row);
+    ctx.stroke();
+  }
+}
 
 
 var playBoard = [
@@ -32,6 +41,18 @@ var playBoard = [
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
 ]
+
+// 石を置く関数
+function drawStone(){
+
+}
+
+
+
+
+
+
+
 
 
 var displayPlayer = document.getElementById("player")
